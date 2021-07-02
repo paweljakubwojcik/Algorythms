@@ -27,10 +27,10 @@ const removeIslands = (array) => {
     const SIZE_X = array[0].length
 
     const NEIGHBOURS = [
-        [-1, -1],
-        [-1, 1],
-        [1, 1],
-        [1, -1],
+        [-1, 0],
+        [1, 0],
+        [0, 1],
+        [0, -1],
     ]
 
     const isConnectedToEdge = (x, y, traversed) => {
@@ -39,8 +39,7 @@ const removeIslands = (array) => {
         if (x === 0 || x === SIZE_X - 1 || y === 0 || y === SIZE_Y - 1) {
             return true
         }
-        for (let index = 0; index < NEIGHBOURS.length; index++) {
-            const [dx, dy] = NEIGHBOURS[index]
+        return NEIGHBOURS.map(([dx, dy]) => {
             const newX = x + dx
             const newY = y + dy
 
@@ -52,7 +51,7 @@ const removeIslands = (array) => {
                 !traversed.includes(stringifyIndex(newX, newY))
             )
                 return isConnectedToEdge(newX, newY, [...traversed, stringifyIndex(newX, newY)])
-        }
+        }).includes(true)
     }
 
     return array.map((row, y) => row.map((value, x) => (isConnectedToEdge(x, y, []) ? 1 : 0)))
@@ -64,3 +63,13 @@ function stringifyIndex(x, y) {
 }
 
 module.exports = removeIslands
+
+console.log(
+    removeIslands([
+        [1, 1, 1, 1, 1],
+        [1, 1, 1, 1, 1],
+        [1, 1, 0, 1, 1],
+        [1, 1, 1, 1, 1],
+        [1, 1, 1, 1, 1],
+    ])
+)
